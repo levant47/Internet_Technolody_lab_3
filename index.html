@@ -3,58 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Lab_3</title>
-
 </head>
+
 <body>
+    <label>
+        <input id="slider" type="range" min="500" max="3500" step="100" value="2500">
+    </label>
+    <img id="img" src="" alt="" width="500" height="500">
+    <h2 id="fun">От значения ползунка меняется интервал смены картинки</h2>
 
 <script>
+const Make_RGB_Color = (r, g, b) => `rgb(${r},${g},${b})`;
+const Generate_Random_Byte = () => Math.floor(Math.random() * 256);
+const Generate_Random_Color = () => Make_RGB_Color(
+    Generate_Random_Byte(),
+    Generate_Random_Byte(),
+    Generate_Random_Byte(),
+);
 
-        let images = [];
-        let i = 0;
+const Loop_Background = () => {
+    document.body.style.backgroundColor = Generate_Random_Color();
+    document.getElementById("fun").style.color = Generate_Random_Color();
+    setTimeout(Loop_Background, 1000);
+};
 
-        function Loop_Seconds(){
+const images = [
+    'https://upload.wikimedia.org/wikipedia/ru/1/11/Naruto-manga.jpg',
+    'https://media1.tenor.com/images/e865f93b179576aaf8d7926aefcf5abe/tenor.gif?itemid=13079766',
+    'https://i.mycdn.me/i?r=AEE-HZfz734vGAKlsp5gLh-pQrye4tQd2SOCMRZUuD8nijMoJ8DQZyL91HrRQ9ke7MG1bTyOW9W6Vt50qmjzMAG-&fn=external_8',
+];
 
-            let Date_S = new Date().getSeconds()
+const Loop_Images = (i) => {
+    document.getElementById("img").src = images[i];
+    const delay = 3500 - parseInt(document.getElementById("slider").value);
+    setTimeout(Loop_Images, delay, (i + 1) % images.length);
+}
 
-            let R = Date_S * 25 % 255;
-            let G = Date_S * 15 % 255;
-            let B = Date_S * 5 % 255;
-
-            let Color = "rgb(" + R.toString() + "," + G.toString() + "," + B.toString() + ")";
-
-            document.body.style.backgroundColor = Color
-
-            let R_2 = (Date_S + 2) * 25 % 255;
-            let G_2 = (Date_S + 2) * 15 % 255;
-            let B_2 = (Date_S + 2) * 5 % 255;
-
-            let Color_2 = "rgb(" + R_2.toString() + "," + G_2.toString() + "," + B_2.toString() + ")";
-
-            document.getElementById("fun").style.color = Color_2
-
-            setTimeout("Loop_Seconds()", 1000)
-        }
-
-        images[0] = 'https://upload.wikimedia.org/wikipedia/ru/1/11/Naruto-manga.jpg';
-        images[1] = 'https://lh3.googleusercontent.com/proxy/dPJcQW0HKoFVa3L2UwMs4YsVyyMNQkGL6EH0J70ZSx1eXe7CG3QAONAPTNBbSboHtCFmBXioVULEJ06SDAA2ej9dwvpnMSTCmGxLttXHGSSmtZEp192UYw';
-        images[2] = 'https://i.mycdn.me/i?r=AEE-HZfz734vGAKlsp5gLh-pQrye4tQd2SOCMRZUuD8nijMoJ8DQZyL91HrRQ9ke7MG1bTyOW9W6Vt50qmjzMAG-&fn=external_8';
-
-        function Loop_Images() {
-            document.getElementById("img").src = images[i];
-
-            i++;
-            if (i == images.length) {
-                i = 0;
-            }
-            setTimeout("Loop_Images()",3500 - parseInt(document.getElementById("slider").value));
-        }
-    </script>
-
-<label>
-    <input id="slider" type="range" min="500" max="3500" step="100" value="2500">
-</label>
-<img id="img" src="" alt="" width="500" height="500">
-<h2 id="fun">От значения ползунка меняется интервал смены картинки</h2>
-<script>Loop_Images(); Loop_Seconds();</script>
+Loop_Images(0);
+Loop_Background();
+</script>
 </body>
 </html>
+
